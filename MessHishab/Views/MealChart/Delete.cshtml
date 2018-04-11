@@ -1,0 +1,72 @@
+﻿@model MessHishab.MealChart
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>MealChart</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Monning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Monning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Middday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Middday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Evennig)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evennig)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.serialNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.serialNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMember.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMember.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,66 @@
+﻿@model MessHishab.MealChart
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MealChart</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Monning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Monning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Middday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Middday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Evennig)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evennig)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.serialNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.serialNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMember.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMember.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

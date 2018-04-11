@@ -1,0 +1,83 @@
+﻿@model MessHishab.MealChart
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>MealChart</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <div class="form-group">
+                @Html.LabelFor(model => model.MemberId, "MemberId", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("MemberId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.MemberId)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Date)
+                    @Html.ValidationMessageFor(model => model.Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Monning, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Monning)
+                    @Html.ValidationMessageFor(model => model.Monning)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Middday, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Middday)
+                    @Html.ValidationMessageFor(model => model.Middday)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evennig, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Evennig)
+                    @Html.ValidationMessageFor(model => model.Evennig)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.serialNo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.serialNo)
+                    @Html.ValidationMessageFor(model => model.serialNo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

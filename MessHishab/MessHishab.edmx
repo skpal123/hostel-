@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MessDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DailyBazarList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="UnitId" Type="uniqueidentifier" />
+          <Property Name="Quantity" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="Price" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="PurchaserId" Type="uniqueidentifier" />
+          <Property Name="ItemId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Deposit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="MemberId" Type="uniqueidentifier" />
+          <Property Name="Amount" Type="numeric" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="MealChart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MemberId" Type="uniqueidentifier" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Morning" Type="float" />
+          <Property Name="Midday" Type="float" />
+          <Property Name="Evening" Type="float" />
+          <Property Name="serialNo" Type="int" />
+        </EntityType>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="CategoryId" Type="uniqueidentifier" />
+          <Property Name="UnitId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="tblMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="10" />
+          <Property Name="MobileNo" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="tblUnit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK__DailyBaza__ItemI__4AB81AF0">
+          <End Role="tblItem" Type="Self.tblItem" Multiplicity="0..1" />
+          <End Role="DailyBazarList" Type="Self.DailyBazarList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItem">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyBazarList">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DailyBaza__Purch__49C3F6B7">
+          <End Role="tblMember" Type="Self.tblMember" Multiplicity="0..1" />
+          <End Role="DailyBazarList" Type="Self.DailyBazarList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMember">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyBazarList">
+              <PropertyRef Name="PurchaserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DailyBaza__UnitI__48CFD27E">
+          <End Role="tblUnit" Type="Self.tblUnit" Multiplicity="0..1" />
+          <End Role="DailyBazarList" Type="Self.DailyBazarList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUnit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyBazarList">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Deposit__MemberI__3C69FB99">
+          <End Role="tblMember" Type="Self.tblMember" Multiplicity="0..1" />
+          <End Role="Deposit" Type="Self.Deposit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMember">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Deposit">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MealChart__Membe__4D94879B">
+          <End Role="tblMember" Type="Self.tblMember" Multiplicity="0..1" />
+          <End Role="MealChart" Type="Self.MealChart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMember">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MealChart">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblItem__Categor__36B12243">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="0..1" />
+          <End Role="tblItem" Type="Self.tblItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblItem">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblItem__UnitId__37A5467C">
+          <End Role="tblUnit" Type="Self.tblUnit" Multiplicity="0..1" />
+          <End Role="tblItem" Type="Self.tblItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUnit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblItem">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MessDBModelStoreContainer">
+          <EntitySet Name="DailyBazarList" EntityType="Self.DailyBazarList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deposit" EntityType="Self.Deposit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MealChart" EntityType="Self.MealChart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblItem" EntityType="Self.tblItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMember" EntityType="Self.tblMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUnit" EntityType="Self.tblUnit" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__DailyBaza__ItemI__4AB81AF0" Association="Self.FK__DailyBaza__ItemI__4AB81AF0">
+            <End Role="tblItem" EntitySet="tblItem" />
+            <End Role="DailyBazarList" EntitySet="DailyBazarList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DailyBaza__Purch__49C3F6B7" Association="Self.FK__DailyBaza__Purch__49C3F6B7">
+            <End Role="tblMember" EntitySet="tblMember" />
+            <End Role="DailyBazarList" EntitySet="DailyBazarList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DailyBaza__UnitI__48CFD27E" Association="Self.FK__DailyBaza__UnitI__48CFD27E">
+            <End Role="tblUnit" EntitySet="tblUnit" />
+            <End Role="DailyBazarList" EntitySet="DailyBazarList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Deposit__MemberI__3C69FB99" Association="Self.FK__Deposit__MemberI__3C69FB99">
+            <End Role="tblMember" EntitySet="tblMember" />
+            <End Role="Deposit" EntitySet="Deposit" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MealChart__Membe__4D94879B" Association="Self.FK__MealChart__Membe__4D94879B">
+            <End Role="tblMember" EntitySet="tblMember" />
+            <End Role="MealChart" EntitySet="MealChart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblItem__Categor__36B12243" Association="Self.FK__tblItem__Categor__36B12243">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblItem" EntitySet="tblItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblItem__UnitId__37A5467C" Association="Self.FK__tblItem__UnitId__37A5467C">
+            <End Role="tblUnit" EntitySet="tblUnit" />
+            <End Role="tblItem" EntitySet="tblItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MessDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DailyBazarList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="UnitId" Type="Guid" />
+          <Property Name="Quantity" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="PurchaserId" Type="Guid" />
+          <Property Name="ItemId" Type="Guid" />
+          <NavigationProperty Name="tblItem" Relationship="Self.FK__DailyBaza__ItemI__4AB81AF0" FromRole="DailyBazarList" ToRole="tblItem" />
+          <NavigationProperty Name="tblMember" Relationship="Self.FK__DailyBaza__Purch__49C3F6B7" FromRole="DailyBazarList" ToRole="tblMember" />
+          <NavigationProperty Name="tblUnit" Relationship="Self.FK__DailyBaza__UnitI__48CFD27E" FromRole="DailyBazarList" ToRole="tblUnit" />
+        </EntityType>
+        <EntityType Name="Deposit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="MemberId" Type="Guid" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="0" />
+          <NavigationProperty Name="tblMember" Relationship="Self.FK__Deposit__MemberI__3C69FB99" FromRole="Deposit" ToRole="tblMember" />
+        </EntityType>
+        <EntityType Name="MealChart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="MemberId" Type="Guid" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Morning" Type="Double" />
+          <Property Name="Midday" Type="Double" />
+          <Property Name="Evening" Type="Double" />
+          <Property Name="serialNo" Type="Int32" />
+          <NavigationProperty Name="tblMember" Relationship="Self.FK__MealChart__Membe__4D94879B" FromRole="MealChart" ToRole="tblMember" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblItems" Relationship="Self.FK__tblItem__Categor__36B12243" FromRole="tblCategory" ToRole="tblItem" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryId" Type="Guid" />
+          <Property Name="UnitId" Type="Guid" />
+          <NavigationProperty Name="DailyBazarLists" Relationship="Self.FK__DailyBaza__ItemI__4AB81AF0" FromRole="tblItem" ToRole="DailyBazarList" />
+          <NavigationProperty Name="tblCategory" Relationship="Self.FK__tblItem__Categor__36B12243" FromRole="tblItem" ToRole="tblCategory" />
+          <NavigationProperty Name="tblUnit" Relationship="Self.FK__tblItem__UnitId__37A5467C" FromRole="tblItem" ToRole="tblUnit" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DailyBazarLists" Relationship="Self.FK__DailyBaza__Purch__49C3F6B7" FromRole="tblMember" ToRole="DailyBazarList" />
+          <NavigationProperty Name="Deposits" Relationship="Self.FK__Deposit__MemberI__3C69FB99" FromRole="tblMember" ToRole="Deposit" />
+          <NavigationProperty Name="MealCharts" Relationship="Self.FK__MealChart__Membe__4D94879B" FromRole="tblMember" ToRole="MealChart" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DailyBazarLists" Relationship="Self.FK__DailyBaza__UnitI__48CFD27E" FromRole="tblUnit" ToRole="DailyBazarList" />
+          <NavigationProperty Name="tblItems" Relationship="Self.FK__tblItem__UnitId__37A5467C" FromRole="tblUnit" ToRole="tblItem" />
+        </EntityType>
+        <Association Name="FK__DailyBaza__ItemI__4AB81AF0">
+          <End Role="tblItem" Type="MessDBModel.Item" Multiplicity="0..1" />
+          <End Role="DailyBazarList" Type="Self.DailyBazarList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblItem">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyBazarList">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DailyBaza__Purch__49C3F6B7">
+          <End Role="tblMember" Type="MessDBModel.Member" Multiplicity="0..1" />
+          <End Role="DailyBazarList" Type="Self.DailyBazarList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMember">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyBazarList">
+              <PropertyRef Name="PurchaserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DailyBaza__UnitI__48CFD27E">
+          <End Role="tblUnit" Type="MessDBModel.Unit" Multiplicity="0..1" />
+          <End Role="DailyBazarList" Type="Self.DailyBazarList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUnit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyBazarList">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Deposit__MemberI__3C69FB99">
+          <End Role="tblMember" Type="MessDBModel.Member" Multiplicity="0..1" />
+          <End Role="Deposit" Type="Self.Deposit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMember">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Deposit">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MealChart__Membe__4D94879B">
+          <End Role="tblMember" Type="MessDBModel.Member" Multiplicity="0..1" />
+          <End Role="MealChart" Type="Self.MealChart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMember">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MealChart">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblItem__Categor__36B12243">
+          <End Role="tblCategory" Type="MessDBModel.Category" Multiplicity="0..1" />
+          <End Role="tblItem" Type="MessDBModel.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblItem">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblItem__UnitId__37A5467C">
+          <End Role="tblUnit" Type="MessDBModel.Unit" Multiplicity="0..1" />
+          <End Role="tblItem" Type="MessDBModel.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUnit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblItem">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MessDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DailyBazarLists" EntityType="Self.DailyBazarList" />
+          <EntitySet Name="Deposits" EntityType="Self.Deposit" />
+          <EntitySet Name="MealCharts" EntityType="Self.MealChart" />
+          <EntitySet Name="Categories" EntityType="MessDBModel.Category" />
+          <EntitySet Name="Items" EntityType="MessDBModel.Item" />
+          <EntitySet Name="Members" EntityType="MessDBModel.Member" />
+          <EntitySet Name="Units" EntityType="MessDBModel.Unit" />
+          <AssociationSet Name="FK__DailyBaza__ItemI__4AB81AF0" Association="Self.FK__DailyBaza__ItemI__4AB81AF0">
+            <End Role="tblItem" EntitySet="Items" />
+            <End Role="DailyBazarList" EntitySet="DailyBazarLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DailyBaza__Purch__49C3F6B7" Association="Self.FK__DailyBaza__Purch__49C3F6B7">
+            <End Role="tblMember" EntitySet="Members" />
+            <End Role="DailyBazarList" EntitySet="DailyBazarLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DailyBaza__UnitI__48CFD27E" Association="Self.FK__DailyBaza__UnitI__48CFD27E">
+            <End Role="tblUnit" EntitySet="Units" />
+            <End Role="DailyBazarList" EntitySet="DailyBazarLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Deposit__MemberI__3C69FB99" Association="Self.FK__Deposit__MemberI__3C69FB99">
+            <End Role="tblMember" EntitySet="Members" />
+            <End Role="Deposit" EntitySet="Deposits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MealChart__Membe__4D94879B" Association="Self.FK__MealChart__Membe__4D94879B">
+            <End Role="tblMember" EntitySet="Members" />
+            <End Role="MealChart" EntitySet="MealCharts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblItem__Categor__36B12243" Association="Self.FK__tblItem__Categor__36B12243">
+            <End Role="tblCategory" EntitySet="Categories" />
+            <End Role="tblItem" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblItem__UnitId__37A5467C" Association="Self.FK__tblItem__UnitId__37A5467C">
+            <End Role="tblUnit" EntitySet="Units" />
+            <End Role="tblItem" EntitySet="Items" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MessDBModelStoreContainer" CdmEntityContainer="MessDbContext">
+          <EntitySetMapping Name="DailyBazarLists">
+            <EntityTypeMapping TypeName="MessDBModel.DailyBazarList">
+              <MappingFragment StoreEntitySet="DailyBazarList">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PurchaserId" ColumnName="PurchaserId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deposits">
+            <EntityTypeMapping TypeName="MessDBModel.Deposit">
+              <MappingFragment StoreEntitySet="Deposit">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MealCharts">
+            <EntityTypeMapping TypeName="MessDBModel.MealChart">
+              <MappingFragment StoreEntitySet="MealChart">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Morning" ColumnName="Morning" />
+                <ScalarProperty Name="Midday" ColumnName="Midday" />
+                <ScalarProperty Name="Evening" ColumnName="Evening" />
+                <ScalarProperty Name="serialNo" ColumnName="serialNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="MessDBModel.Category">
+              <MappingFragment StoreEntitySet="tblCategory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="MessDBModel.Item">
+              <MappingFragment StoreEntitySet="tblItem">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="MessDBModel.Member">
+              <MappingFragment StoreEntitySet="tblMember">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Units">
+            <EntityTypeMapping TypeName="MessDBModel.Unit">
+              <MappingFragment StoreEntitySet="tblUnit">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

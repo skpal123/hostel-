@@ -1,0 +1,308 @@
+﻿
+<div id="MainDiv">
+    <div class="container">
+        <br/>
+        <legend>
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" class="form-control" id="monthName" placeholder="Enter month name" />
+                </div>
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" id="btnGenerate" value="Generate Meal Chart" />
+                </div>
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary" id="btnsubmit" value="Save Meal Chart" />
+                </div>
+                
+                <div class="col-md-3">
+                    <label>Is Landscape mode</label>
+                    <input type="checkbox" id="Islandscape" value="Is Landscape mode"/>
+                </div>
+            </div>
+        </legend>
+        <div class="panel panel-primary" id="tablePanel">
+            <div class="panel-heading">Meal Chart for @DateTime.Now.Date</div>
+            <div class="panel-body">
+                <table class="table table-bordered" id="itemList"></table>
+            </div>
+            <div class="panel-footer">Panel Footer</div>
+        </div>
+
+    </div>
+</div>
+<div id="myDiv">
+    <table border="1" id="mealcharttable"></table>
+</div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<link href="~/Scripts/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/Item.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var id = 0;
+        var memberList = [];
+        var MealChartList = [];
+        getAllMealChart();
+        getMemberList();
+        var memberId, morning, lunch, dinner;
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        mealChartByDateBased();
+        $('#mealcharttable').hide();
+        populateMealChartTable(lastDay);
+        function getMemberList() {
+            $.ajax({
+                async: false,
+                url: '@Url.Action("getMember","Member")',
+                method: 'get',
+                contentType: 'application/json',
+                success: function (data) {
+                    memberList = data;
+                },
+                error: function (error) {
+                    alert(error.error);
+                }
+            });
+
+        }
+        function populateMealChartTable(lastDay) {
+            var str = '<tr><td></td>';
+            var str2 = '<tr><th></th>';
+            for (j = 0; j < memberList.length; j++) {
+                str2 += '<th>' + memberList[j].Name + '</th>';
+            }
+            str2 += '</tr>';
+            $('#itemList').append(str2);
+            var month = lastDay.getMonth();
+            month = Number(month) + 1;
+            for (j = 0; j < memberList.length; j++) {
+                str += '<td><table><th><td>Morning</td><td>lunch</td><td>Dinner</td><th></table></td>';
+            }
+            str += '</tr>';
+            for (var i = 1; i <= lastDay.getDate() ; i++) {
+                str += '<tr><td>' + month + '/' + i + '/' + lastDay.getFullYear() + '</td>';
+                for (j = 0; j < memberList.length; j++) {
+
+                    var member = $.grep(MealChartList, function (element, index) {
+                        return element.MemberId == memberList[j].Id && element.Date == month + '/' + i + '/' + date.getFullYear() + ' 12:00:00 AM'
+                    });
+                    str += '<td id="' + memberList[j].Name + '"><table id="' + memberList[j].Id + '"><tr><td ><input size="2" class="textboxstyle" type="text" value="' + member[0].Morning +
+                        '" id="morning"/></td><td><input type="text" size="2"  class="textboxstyle" value="'
+                        + member[0].Lunch + '" id="lunch"/></td><td><input type="text" class="textboxstyle" size="2" value="'
+                        + member[0].Dinner + '" id="dinner"/></td></tr></table></td>'
+                }
+                str += '</tr>';
+            }
+            $('#itemList').append(str);
+            $('#MainDiv').css('tr');
+
+        }
+
+        $('#btnsubmit').click(function () {
+
+            var MealList = [];
+            if ($('#Islandscape').prop('checked') == true) {
+                $('#mealcharttable tr:not(:first-child)').each(function (index, row) {
+                    if (index > 0) {
+                        var date = this.cells[0].innerHTML;
+                        var item = '';
+
+                        $('table', row).each(function (index, collum) {
+                            memberId = $(collum).attr('id');
+                            $('input', collum).each(function (index, value) {
+                                if ($(value).attr('id') == 'morning') {
+                                    morning = $(value).val();
+                                } else if ($(value).attr('id') == 'lunch') {
+                                    lunch = $(value).val();
+                                } else if ($(value).attr('id') == 'dinner') {
+                                    dinner = $(value).val()
+                                }
+                            });
+                            var memberMeal = {
+                                MemberId: memberId,
+                                Morning: morning,
+                                Lunch: lunch,
+                                Dinner: dinner,
+                                Date: date
+                            }
+                            MealList.push(memberMeal);
+                        });
+                    }
+
+                });
+            }
+            else
+            {
+                $('#itemList tr:not(:first-child)').each(function (index, row) {
+                    if (index > 0) {
+                        var date = this.cells[0].innerHTML;
+                        var item = '';
+
+                        $('table', row).each(function (index, collum) {
+                            memberId = $(collum).attr('id');
+                            $('input', collum).each(function (index, value) {
+                                if ($(value).attr('id') == 'morning') {
+                                    morning = $(value).val();
+                                } else if ($(value).attr('id') == 'lunch') {
+                                    lunch = $(value).val();
+                                } else if ($(value).attr('id') == 'dinner') {
+                                    dinner = $(value).val()
+                                }
+                            });
+                            var memberMeal = {
+                                MemberId: memberId,
+                                Morning: morning,
+                                Lunch: lunch,
+                                Dinner: dinner,
+                                Date: date
+                            }
+                            MealList.push(memberMeal);
+                        });
+                    }
+
+                });
+            }
+     
+            saveMealChart(MealList);
+        });
+        $('#Islandscape').click(function() {
+            if ($('#Islandscape').prop('checked') == true) {
+                $('#tablePanel').hide();
+                $('#mealcharttable').show();
+            } else {
+                $('#tablePanel').show();
+                $('#mealcharttable').hide();
+            }
+        });
+        //$(document).on('mouseover',
+        //    'input[type="text"]',
+        //    function(el, ev) {
+        //        var value = $(this).parent().parent().parent().parent().attr('id');
+        //        alert(value);
+        //    });
+        $(document).on('click',
+            'input[type="text"]',
+            function (el, ev) {
+                $(this).val('');
+                $(this).val();
+            });
+        function saveMealChart(MealList) {
+            var memberlist = [];
+            $.ajax({
+                async: true,
+                url: '@Url.Action("SaveMealChart","MealChart")',
+                method: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(MealList),
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (error) {
+                    alert(error.error);
+                }
+            });
+
+        }
+        function getAllMealChart() {
+            $.ajax({
+                async: false,
+                url: '@Url.Action("getAllMealChatList","MealChart")',
+                method: 'get',
+                contentType: 'application/json',
+                success: function (data) {
+                    MealChartList = data;
+                },
+                error: function (error) {
+                    alert(error.error);
+                }
+            });
+
+        }
+        function generateMealchart(monthdate) {
+            $.ajax({
+                async: false,
+                url: '@Url.Action("getAllMealChatList","MealChart")',
+                    method: 'get',
+                    contentType: 'application/json',
+                    data: { monthName: monthdate },
+                    success: function(data) {
+                        alert(data);
+                    },
+                    error: function(error) {
+                        alert(error.error);
+                    }
+                });
+
+            }
+
+            $('#monthName').datepicker({
+                appendText: 'mm/dd/yyyy',
+                changeMonth: true,
+                changeYear: true,
+                buttonText: 'Date',
+                dateFormat: 'mm/dd/yy',
+                onSelect: function() {
+                    generateMealchart(this.value);
+                }
+            });
+
+            function mealChartByDateBased(monthdate) {
+                var str = '<tr><td></td>';
+                var str2 = '<tr><th></th>';
+                for (j = 0; j < lastDay.getDate() ; j++) {
+                    var value = j + 1;
+                    var month = lastDay.getMonth() + 1;
+                    str2 += '<th>' + value + '-' + month + '-' + lastDay.getFullYear() + '</th>';
+                }
+                str2 +='</tr>';
+                $('#mealcharttable').append(str2);
+                for (j = 0; j < lastDay.length; j++) {
+                    str += '<td><table><th><td>Morning</td><td>lunch</td><td>Dinner</td><th></table></td>'
+                }
+                str += '</tr>';
+                for (var i = 0; i < memberList.length ; i++) {
+                    str += '<tr><td>' +memberList[i].Name+ '</td>';
+                    for (j = 1; j <= lastDay.getDate(); j++) { 
+
+                        var member = $.grep(MealChartList, function (element, index) {
+                            return element.MemberId == memberList[i].Id && element.Date == lastDay.getMonth()+1 + '/' +j + '/' + date.getFullYear() + ' 12:00:00 AM'
+                        });
+                        str += '<td id="' +
+                            memberList[i].Name +
+                            '"><table id="' +
+                            memberList[i].Id +
+                            '"><tr><td ><input size="2" class="textboxstyle" type="text" value="' +
+                            member[0].Morning +
+                            '" id="morning"/></td><td><input type="text" size="2"  class="textboxstyle" value="' +
+                            member[0].Lunch +
+                            '" id="lunch"/></td><td><input type="text" class="textboxstyle" size="2" value="' +
+                            member[0].Dinner +
+                            '" id="dinner"/></td></tr></table></td>';
+                    }
+                    str += '</tr>';
+                }
+                $('#mealcharttable').append(str);
+                $('#myDiv').css('tr');
+             }
+        })
+
+</script>
+<style>
+    .textboxstyle {
+        text-align: center;
+    }
+    .panel .panel-body {
+        height: auto;
+        width: 100%;
+    }
+</style>
+
+
+
+
+
+
